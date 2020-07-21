@@ -1,4 +1,4 @@
-## ecom_website
+## E-commerce website
 This is a online store website implemented using Django.
 
 ## Installation

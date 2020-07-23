@@ -23,7 +23,8 @@ class Product(models.Model):
         try:
             url=self.image.url
         except:
-            url = 'static/images/no_image.jpg'
+            url = '/images/no_image.jpg'
+        return url
     
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL,null=True, blank=True)
@@ -33,12 +34,28 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.id)
+    @property
+    def get_cart_total(self):
+        orderitem = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderitem])
+        return total
+    
+    @property
+    def get_cart_items(self):
+        orderitem = self.orderitem_set.all()
+        total = sum([item.quantity for item in orderitem])
+        return total
     
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order,on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0,null=True,blank=True)
     data_added = models.DateTimeField(auto_now_add = True)
+    
+    @property
+    def get_total(self):
+        total = self.product.prize *self.quantity
+        return total
     
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL,null=True)

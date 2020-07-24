@@ -24,6 +24,7 @@ function updateUserOrder(productID, action) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
             },
             body: JSON.stringify({ 'productID': productID, 'action': action })
         })
@@ -31,6 +32,6 @@ function updateUserOrder(productID, action) {
             return response.json();
         })
         .then((data) => {
-            console.log('Data: ', data)
+            location.reload()
         });
 }
